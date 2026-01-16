@@ -1,0 +1,263 @@
+﻿
+
+
+
+@{
+    ViewBag.Title = "GetAllJs";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<div class="container">
+
+    <div class="row">
+        <div class="col-5">
+
+            <button type="button" data-bs-toggle="" data-bs-target="#staticBackdrop" class="btn btn-outline-success" onclick="MostrarModal()">
+                Agregar Usuario
+            </button>
+        </div>
+        <div class="table-responsive">
+
+
+            <table class="table table-bordered border border-white table table-striped " align="left">
+                <thead>
+                    <tr>
+                        <th class="cuadro" style="background-color: #07546E ">IdUsuario</th>
+                        <th class="cuadro" style="background-color: #07546E ">UserName</th>
+                        <th class="cuadro" style="background-color: #07546E ">Nombre</th>
+                        <th class="cuadro" style="background-color: #07546E ">Apellido Paterno  </th>
+                        <th class="cuadro" style="background-color: #07546E ">Apellido Materno  </th>
+                        <th class="cuadro" style="background-color: #07546E ">Email</th>
+                        <th class="cuadro" style="background-color: #07546E ">Password</th>
+                        <th class="cuadro" style="background-color: #07546E ">Fecha Nacimineto</th>
+                        <th class="cuadro" style="background-color: #07546E ">Sexo</th>
+                        <th class="cuadro" style="background-color: #07546E ">Telefono</th>
+                        <th class="cuadro" style="background-color: #07546E ">Celular</th>
+                        <th class="cuadro" style="background-color: #07546E ">Estatus</th>
+                        <th class="cuadro" style="background-color: #07546E ">Curp</th>
+                        <th class="cuadro" style="background-color: #07546E ">Imagen</th>
+                        <th class="cuadro" style="background-color: #07546E ">Nombre Rol</th>
+                        <th class="cuadro" style="background-color: #07546E ">Direccion</th>
+                        <th class="cuadro" style="background-color: #07546E ">Editar</th>
+                        <th class="cuadro" style="background-color: #07546E ">Eliminar</th>
+
+
+                    </tr>
+                </thead>
+                <tbody id="TbobyJsGetAll">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+
+<!-- Modal -->
+<div class="modal modal-lg  fade" id="modalFrom" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-2" id="staticBackdropLabel">Usuario</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <form class="col-12">
+                    <input type="hidden" id="IdUsuario" name="IdUsuario" value="valor_del_id" />
+                    <input type="hidden" id="Imagen" name="Imagen" value="ruta_o_nombre_de_imagen" />
+
+                    <div class="p-3 mb-2 border border-secondary text-black">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="form-label ">User Name</label>
+                                <input class="form-control" type="text" id="inptUsuarioUserName" onkeypress="validarAlfanumerico(this)" onpaste="ValidarPegado(this)" required />
+                            </div>
+                            <div class="col-4">
+                                <label class="form-label ">Nombre</label>
+                                <input class="form-control" type="text" id="inptUsuarioNombre" onpaste="ValidarPegado(this)" onkeypress="return SoloLetras(this,event)" required />
+                            </div>
+
+                            <div class="col-4">
+                                <label class="form-label ">Apellido Paterno</label>
+                                <input class="form-control" type="text" id="inptUsuarioApellidoPaterno" onpaste="ValidarPegado(this)" onkeypress="return SoloLetras(this,event)" />
+                            </div>
+
+                            <div class="col-4">
+                                <label class="form-label">Apellido Materno</label>
+                                <input class="form-control" type="text" id="inptUsuarioApellidoMaterno" onpaste="ValidarPegado(this)" onkeypress="return SoloLetras(this,event)" />
+
+                            </div>
+
+                            <div class="col-4">
+
+                                <label class="form-label">Email</label>
+                                <input class="form-control" type="email" id="inptUsuarioEmail" oninput="validarEmail(this)" onpaste="ValidarPegado(this)" />
+
+                            </div>
+                            <div class="col-4">
+                                <label for="inptUsuarioPassword" class="form-label">Contraseña</label>
+                                <input type="password"
+                                       id="inptUsuarioPassword"
+                                       name="Password"
+                                       class="form-control"
+                                       oninput="mostrarConfirmPassword(this); validarPassword(this);" />
+                            </div>
+
+                            <div class="col-4" id="confirm-container" style="display:none;">
+                                <label for="confirm-password" class="form-label">Confirmar</label>
+                                <input type="password"
+                                       id="confirm-password"
+                                       class="form-control" />
+                            </div>
+
+                            <div class="col-4">
+
+                                <label class="form-label">Facha Nacimiento</label>
+                                <input class="form-control" type="date" id="inptUsuarioFechaDeNacimeiento" onkeypress="validarFecha(this)" />
+
+                            </div>
+                            <div class="col-4">
+
+                                <label class="form-label">Sexo</label>
+                                <select class="form-control" type="text" id="selctUsuarioSexo">
+                                    <option value="">Seleccione sexo</option>
+                                    <option value="M">Mujer</option>
+                                    <option value="H">Hombre</option>
+                                </select>
+
+                            </div>
+                            <div class="col-4">
+
+                                <label class="form-label">Telefono</label>
+                                <input class="form-control" type="tel" id="inptUsuarioTelefono" oninput="phonenumber(this)" onpaste="ValidarPegado(this)" />
+
+                            </div>
+                            <div class="col-4">
+
+                                <label class="form-label">Celular</label>
+                                <input class="form-control" type="tel" id="inptUsuarioCelular" oninput="phonenumber(this)" onpaste="ValidarPegado(this)" />
+
+                            </div>
+                            <div class="col-4">
+
+
+                                <label class="form-label">Estatus</label>
+                                <select class="form-control" id="selecUsuarioEstatus">
+                                    <option value="">Seleccione Estatus</option>
+                                    <option value="true">Activo</option>
+                                    <option value="false">Inactivo</option>
+                                </select>
+
+
+                            </div>
+
+                            <div class="col-4">
+
+                                <label class="form-label">Curp</label>
+                                <input class="form-control" type="tel" id="inptUsuarioCurp" oninput="validarCURP(this)" onpaste="ValidarPegado(this)" />
+
+                            </div>
+
+
+                            <div class="col-4">
+                                <label class="form-label">Rol</label>
+                                <select class="form-control" id="selecUsuarioRol" onchange="validarDropdown(this)">
+                                    <option value="">Selecciona el rol</option>
+                                </select>
+                            </div>
+
+                            <div class="col-4">
+                                <label class="form-label">Imagen</label>
+                                <input class="form-control"
+                                       id="imagenUsuario"
+                                       name="imagenUsuario"
+                                       type="file"
+                                       accept="image/*"
+                                       onchange="validaImagen(); visualizarImagen(this);" />
+
+                            </div>
+
+
+
+
+
+                            <div class="col-4">
+
+                                <label class="form-label">Calle</label>
+                                <input class="form-control" type="text" id="inptUsuarioCalle" onkeypress="validarAlfanumerico(this)" onpaste="ValidarPegado(this)" />
+
+                            </div>
+
+                            <div class="col-4">
+
+                                <label class="form-label">Numero Interior</label>
+                                <input class="form-control" type="text" id="inptUsuarioNInterior" onkeypress="soloNumeros(this)" onpaste="ValidarPegado(this)" />
+
+                            </div>
+                            <div class="col-4">
+
+                                <label class="form-label">Numero Exterior</label>
+                                <input class="form-control" type="text" id="inptUsuarioNExterior" onkeypress="soloNumeros(this)" onpaste="ValidarPegado(this)" />
+
+                            </div>
+                            <div class="col-4">
+
+                                <label class="form-label">Estado</label>
+                                <select class="form-control" type="text" id="ddlEstado" onchange="validarDropdown(this)">
+                                    <option value="">Selecciona el Estado</option>
+                                </select>
+
+                            </div>
+                            <div class="col-4">
+
+                                <label class="form-label">Municipio</label>
+                                <select class="form-control" type="text" id="ddlMunicipio" onchange="validarDropdown(this)">
+                                    <option value="">Selecciona el Municipio</option>
+                                </select>
+
+                            </div>
+
+                            <div class="col-4">
+
+                                <label class="form-label">Colonia</label>
+                                <select class="form-control" type="text" id="ddlColonia" onchange="validarDropdown(this)">
+                                    <option value="">Selecciona el Colonia</option>
+                                </select>
+
+                            </div>
+                            <div class="col-3">
+                                <label>Imagen :D</label>
+                                <img class="col-10 mt-2" id="imgPreview" />
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" id="btnGurdar" class="btn btn-primary">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@Scripts.Render("~/bundles/jquery")
+<script src="~/Scripts/jquery-3.4.1.js"></script>
+<script>var endpointUsuario = '@ViewBag.UsuarioUrl'</script>
+<script src="~/Scripts/UsuariosJs/Usuario.js"></script>
+
+<style>
+    th {
+        color: white;
+    }
+</style>

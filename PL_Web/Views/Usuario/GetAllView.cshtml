@@ -1,0 +1,107 @@
+﻿@model ML.Usuario
+@{
+    ViewBag.Title = "GetAllView";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Vista Usuaios</h2>
+
+ 
+<div class="container">
+    <div class="row">
+        <div class="table-responsive col-12">
+            <table class="table table-bordered border border-white table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th class="table-dark">UserName</th>
+                        <th class="table-dark">Nombre</th>
+                        <th class="table-dark">Apellido Paterno  </th>
+                        <th class="table-dark">Apellido Materno  </th>
+                        <th class="table-dark">Email</th>
+                        <th class="table-dark">Password</th>
+                        <th class="table-dark">Fecha Nacimineto</th>
+                        <th class="table-dark">Sexo</th>
+                        <th class="table-dark">Telefono</th>
+                        <th class="table-dark">Celular</th>
+                        <th class="table-dark">Estatus</th>
+                        <th class="table-dark">Curp</th>
+                        <th class="table-dark">Imagen</th>
+                        <th class="table-dark">Nombre Rol</th>
+                        <th class="table-dark">Direccion</th>
+
+
+                        @*<th class="table-dark">Editar</th>
+        <th class="table-dark">Eliminar</th>*@
+
+
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @if (Model.Usuarios != null && Model.Usuarios.Count > 0)
+
+                    {
+                        foreach (ML.Usuario usuario in Model.Usuarios)
+                        {
+                            <tr>
+                                <td class="table-primary">@usuario.UserName</td>
+                                <td class="table-success">@usuario.Nombre</td>
+                                <td class="table-secondary">@usuario.ApellidoPaterno</td>
+                                <td class="table-primary">@usuario.ApellidoMaterno</td>
+                                <td class="table-success">@usuario.Email</td>
+                                <td class="table-secondary">@usuario.Password</td>
+                                <td class="table-primary">@usuario.FechaNacimiento</td>
+                                <td class="table-success">@usuario.SEXO</td>
+                                <td class="table-secondary">@usuario.Telefono</td>
+                                <td class="table-primary">@usuario.Celular</td>
+                                <td class="text-center table-success">@usuario.Estatus</td>
+                                <td class="table-secondary">@usuario.CURP</td>
+                                @if (usuario.Imagen != null)
+                                {
+                                    <td class="table-primary">
+                                        <img class="col-12" src="data:image/*;base64,@Convert.ToBase64String(usuario.Imagen)" />
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td>
+                                        <img class="col-12" src="https://e7.pngegg.com/pngimages/556/580/png-clipart-computer-icons-symbol-user-profile-logo-symbol-miscellaneous-white.png" />
+                                    </td>
+                                }
+                                <td class="table-success">@usuario.Rol.Nombre</td>
+                                <td class="table-secondary" style="min-width: 300px; white-space: normal;"> @usuario.Direccion.Calle @usuario.Direccion.NumeroInterior ext.@usuario.Direccion.NumeroExterior, @usuario.Direccion.Colonia.Nombre , @usuario.Direccion.Colonia.CPostal @usuario.Direccion.Colonia.Municipio.Nombre , @usuario.Direccion.Colonia.Municipio.Estado.Nombre</td>
+
+
+                                @*<td>
+            <a href="@Url.Action("Form","Usuario", new { IdUser = usuario.IdUsuario })" class="btn btn-outline-info">
+                <i class="bi bi-pencil-square"></i>
+            </a>
+        </td>
+
+        <td>
+            <a href="@Url.Action("Delete","Usuario", new { Id = usuario.IdUsuario })" class="btn btn-outline-danger"
+               OnClick=" return confirm('¿Estás seguro de que deseas eliminar este usuario?')">
+                <i class="bi bi-trash-fill"></i>
+            </a>
+
+        </td>*@
+
+                            </tr>
+
+                        }
+
+                    }
+                    else
+                    {
+                        <p>No hay Registros</p>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+

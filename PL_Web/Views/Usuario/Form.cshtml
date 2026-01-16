@@ -1,0 +1,801 @@
+﻿@model ML.Usuario
+@{
+    ViewBag.Title = "Form";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var imagen = Model.Imagen;
+
+    var estatus = new List<SelectListItem>
+{
+        new SelectListItem { Value = "true", Text = "Activo" },
+        new SelectListItem { Value = "false", Text = "Inactivo" }
+    };
+
+
+}
+
+<div style="display: flex; justify-content: center;">
+    <h2>Agregar Usuario</h2>
+    </div>
+
+
+
+
+    @using (Html.BeginForm("Form", "Usuario", FormMethod.Post, new { @enctype = "multipart/form-data", @class = "container", @onsubmit = "validaFormulario(this)" }))
+
+    {
+
+
+        @Html.HiddenFor(model => model.IdUsuario)
+        @Html.HiddenFor(model => model.Imagen)
+
+        <div class="p-3 mb-2 border border-secondary text-black">
+            <div class="row">
+                <div class="col-4">
+                    @*//todo el formulario label*@
+                    @Html.LabelFor(modelo => modelo.UserName, new { @class = " form-label" })
+                    @*//Input*@
+                    @Html.TextBoxFor(modelo => modelo.UserName, new { @class = " form-control", @style = "border-width: 3px;", @placeholder = "@", @onkeypress = "validarAlfanumerico(this)" })
+                </div>
+                <div class="col-4">
+                    @Html.LabelFor(modelo => modelo.Nombre, new { @class = "form-label" })
+                    @*//Input*@
+                    <div>
+                        @Html.TextBoxFor(modelo => modelo.Nombre, new { @class = "form-control", @style = "border-width: 3px;", @onkeypress = "SoloLetras(this)", @onpaste = "ValidarPegado(this)" })
+                        <span></span>
+                    </div>
+                </div>
+                <div class="col-4">
+                    @Html.LabelFor(modelo => modelo.ApellidoPaterno, "Apellido Paterno", new { @class = "form-label" })
+                    @*//Input*@
+                    @Html.TextBoxFor(modelo => modelo.ApellidoPaterno, new { @class = "form-control", @style = "border-width: 3px;", @onkeypress = "SoloLetras(this)", @onpaste = "ValidarPegado(this)" })
+                </div>
+            </div>
+
+
+
+            <div class="row">
+                <div class="col-4">
+                    @*//todo el formulario label*@
+                    @Html.LabelFor(modelo => modelo.ApellidoMaterno, "Apellido Materno", new { @class = "form-label" })
+                    @*//Input*@
+                    @Html.TextBoxFor(modelo => modelo.ApellidoMaterno, new { @class = "form-control", @style = "border-width: 3px;", @onkeypress = "SoloLetras(this)", @onpaste = "ValidarPegado(this)" })
+                </div>
+                <div class="col-4">
+                    @Html.LabelFor(modelo => modelo.Email, "Correo electrónico", new { @class = "form-label" })
+                    @*//Input*@
+                    @Html.TextBoxFor(modelo => modelo.Email, new { @class = "form-control", @placeholder = "name@example.com", oninput = "validarEmail(this)", @style = "border-width: 3px;" })
+                </div>
+                <div class="col-4">
+                    @Html.LabelFor(modelo => modelo.Password, "Contraseña", new { @class = "form-label" })
+                    @Html.TextBoxFor(modelo => modelo.Password, new
+               {
+                   @class = "form-control",
+                   @type = "password",
+                   @style = "border-width: 3px;",
+                   oninput = "mostrarConfirmPassword(this); validarPassword(this);"
+               })
+                </div>
+
+                <div class="col-4">
+
+                </div>
+                <div class="col-4">
+
+                </div>
+                <div class="col-4" id="confirm-container" style="display:none;">
+                    @Html.Label("Confirmar contraseña", new { @class = "form-label" })
+                    <input type="password" id="confirm-password" class="form-control" style="border-width: 3px;" />
+                    <div class="invalid-feedback" style="display:none;">Las contraseñas no coinciden.</div>
+                </div>
+
+            </div>
+
+
+            <div class="row">
+                <div class="col-4">
+                    @*//todo el formulario label*@
+                    @Html.LabelFor(modelo => modelo.FechaNacimiento, "Fecha Nacimiento ", new { @class = "form-label" })
+                    @*//Input*@
+                    @Html.TextBoxFor(model => model.FechaNacimiento, new { @type = "date", @class = "form-control", @Value = Model.FechaNacimiento.ToString("yyyy-MM-dd"), @onkeypress = "validarFecha(this)", @style = "border-width: 3px;" })
+
+
+                </div>
+                <div class="col-4">
+                    @Html.LabelFor(modelo => modelo.SEXO, "Sexo", new { @class = "form-label" })
+
+                    <div id="sexoGroup">
+
+                        <div class="form-check">
+                            @Html.RadioButtonFor(modelo => modelo.SEXO, "M", new { @class = "form-check-input sexoOption" })
+                            <label class="form-check-label">Mujer</label>
+                        </div>
+
+                        <div class="form-check">
+                            @Html.RadioButtonFor(modelo => modelo.SEXO, "H", new { @class = "form-check-input sexoOption" })
+                            <label class="form-check-label">Hombre</label>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-4">
+                    @Html.LabelFor(modelo => modelo.Telefono, "Números de Teléfono", new { @class = "form-label" })
+                    @*//Input*@
+                    @Html.TextBoxFor(modelo => modelo.Telefono, new { @class = "form-control", oninput = "phonenumber(this)", @style = "border-width: 3px;" })
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-4">
+                    @*//todo el formulario label*@
+                    @Html.LabelFor(modelo => modelo.Celular, "Número Celular", new { @class = "form-label" })
+                    @*//Input*@
+                    @Html.TextBoxFor(modelo => modelo.Celular, new { @class = "form-control ", oninput = "phonenumber(this)", @style = "border-width: 3px;" })
+                </div>
+                <div class="col-4">
+                    @Html.LabelFor(modelo => modelo.Estatus, new { @class = "form-label" })
+                    @*//Input*@
+                    @Html.DropDownListFor(modelo => modelo.Estatus, estatus, new { @class = "form-control", @style = "border-width: 3px;" })
+                </div>
+                <div class="col-4">
+                    @Html.LabelFor(modelo => modelo.CURP, new { @class = "form-label" })
+                    @*//Input*@
+                    @Html.TextBoxFor(modelo => modelo.CURP, new { @class = "form-control", @style = "border-width: 3px;", oninput = "validarCURP(this)" })
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-4">
+                    @*//todo el formulario label*@
+                    @Html.LabelFor(modelo => modelo.Rol.IdRol, "Rol", new { @class = "form-label" })
+
+                    @*@Html.DropDownListFor(modelo => modelo.Rol.IdRol, rol, "Select rol", new { @class = "form-control" })*@
+                    @Html.DropDownListFor(model => model.Rol.IdRol, new SelectList(Model.Rol.Roles, "IdRol", "Nombre"), "Selecciona El Rol", new { @class = "form-select ", @style = "border-width: 3px;", onchange = "validarDropdown(this)" })
+
+
+
+                </div>
+                <div class="col-4">
+
+                    <div class="col-12 mb-3">
+                        @Html.LabelFor(modelo => modelo.Imagen, "Agregar Usuario Imagen", new { @class = "form-label", @style = "border-width: 3px;" })
+                        @*//Input*@
+
+                        <input class="form-control" id="imagenAuto" name="imagenAuto" type="file" onchange="validaImagen(), visualizarImagen(this)" />
+                        <img class="col-10" id="img" />
+
+
+
+
+
+                    </div>
+
+
+                </div>
+
+                <div class="table-responsive col-4">
+                    <table>
+
+                        <thead>
+                            <tr>
+                                <th>Usuario Imagen</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (imagen != null)
+                            {
+
+                                <tr>
+                                    <td>
+                                        <img class="col-9" src="data:image/*;base64,@Convert.ToBase64String(imagen)" />
+                                    </td>
+                                </tr>
+
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="p-3 mb-2 border border-secondary text-black">
+            <div class="row">
+                <div class="col-4">
+                    @*//todo el formulario label*@
+                    @Html.LabelFor(modelo => modelo.Direccion.Calle, new { @class = " form-label" })
+                    @*//Input*@
+                    @Html.TextBoxFor(modelo => modelo.Direccion.Calle, new { @class = " form-control", @onkeypress = "validarAlfanumerico(this)", @style = "border-width: 3px;", @onpaste = "ValidarPegado(this)" })
+                </div>
+                <div class="col-4">
+                    @*//todo el formulario label*@
+                    @Html.LabelFor(modelo => modelo.Direccion.NumeroInterior, new { @class = " form-label" })
+                    @*//Input*@
+                    @Html.TextBoxFor(modelo => modelo.Direccion.NumeroInterior, new { @class = " form-control", @onkeypress = "soloNumeros(this)", @style = "border-width:3px;", @onpaste = "ValidarPegado(this)" })
+                </div>
+                <div class="col-4">
+                    @*//todo el formulario label*@
+                    @Html.LabelFor(modelo => modelo.Direccion.NumeroExterior, new { @class = " form-label" })
+                    @*//Input*@
+                    @Html.TextBoxFor(modelo => modelo.Direccion.NumeroExterior, new { @class = " form-control", @onkeypress = "soloNumeros(this)", @style = "border-width:3px;", @onpaste = "ValidarPegado(this)" })
+                </div>
+            </div>
+
+
+
+            <div class="row">
+
+                <div class="col-4">
+                    <p></p>
+                    @*@Html.LabelFor(model => model.Version.IdVersion, new { @class = "form-label" })*@
+                    @*@Html.TextAreaFor(modelo => modelo.Version.IdVersion, new { @class = "form-control" })*@
+                    @Html.DropDownListFor(model => model.Direccion.Colonia.Municipio.Estado.IdEstado, new SelectList(Model.Direccion.Colonia.Municipio.Estado.Estados, "IdEstado", "Nombre"), "Selecciona la Estado", new { @class = "form-select btn btn-dark dropdown-toggle dropdown-toggle-split", @onchange = "obtenerId(this); validarDropdownDireccion(this)" })
+                </div>
+
+                <div class="col-4">
+                    <p></p>
+                    @if (Model.Direccion.Colonia.Municipio.Municipios != null)
+                    {
+                        @Html.DropDownListFor(model => model.Direccion.Colonia.Municipio.IdMunicipio, new SelectList(Model.Direccion.Colonia.Municipio.Municipios, "IdMunicipio", "Nombre"), "Seleciona el Municipio", new { @class = "form-select btn btn-info dropdown-toggle dropdown-toggle-split", @id = "ddlMunicipio", @onchange = "obtenerIdMunicipio(this); validarDropdownDireccion(this)" })
+
+                    }
+                    else
+                    {
+                        @Html.DropDownListFor(model => model.Direccion.Colonia.Municipio.IdMunicipio, new SelectList(string.Empty), "Selecciona un Municipio", new { @class = "form-select btn btn-info dropdown-toggle dropdown-toggle-split", @id = "ddlMunicipio", @onchange = "obtenerIdMunicipio(this); validarDropdownDireccion(this)", @disabled = "disabled" })
+
+                    }
+
+                </div>
+
+                <div class="col-4 ">
+                    <p></p>
+                    @if (Model.Direccion.Colonia.Colonias != null)
+                    {
+                        @Html.DropDownListFor(model => model.Direccion.Colonia.IdColonia, new SelectList(Model.Direccion.Colonia.Colonias, "IdColonia", "Nombre"), "Seleciona la Colonia", new { @class = "form-select btn btn-warning dropdown-toggle dropdown-toggle-split", @id = "ddlColonia", @onchange = "validarDropdownDireccion(this)" })
+                    }
+                    else
+                    {
+                        @Html.DropDownListFor(model => model.Direccion.Colonia.IdColonia, new SelectList(string.Empty), "Seleciona la Colonia", new { @class = "form-select btn btn-warning dropdown-toggle dropdown-toggle-split", @id = "ddlColonia", @disabled = "disable", @onchange = "validarDropdownDireccion(this)" })
+
+                    }
+                </div>
+
+            </div>
+
+
+
+        </div>
+
+        <div class="d-grid gap-2 col-4 mx-auto row">
+            <p></p>
+            <button type="submit" class="btn btn-success">Agregar</button>
+            <p></p>
+        </div>
+
+
+    }
+
+
+    @Scripts.Render("~/bundles/jquery")
+
+
+    <script>
+        function validaImagen() {
+            var extensionaesValidas = ['png', 'jpg', 'jpeg']
+            var extensionesArchivos = document.getElementById('imagenAuto').value.split('.').pop().toLowerCase();
+            var esValido = false;
+            for (var index in extensionaesValidas) {
+
+                if (extensionesArchivos == extensionaesValidas[index]) {
+                    esValido = true;
+                    console.log("imagen valida")
+                    break;
+                }
+            }
+            if (!esValido) {
+                alert("Imangen no valida" + extensionaesValidas)
+                $('#imagenAuto').val("");
+            }
+        }
+
+        function visualizarImagen(input) {
+            console.log(input)
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#img').attr('src', e.target.result)
+                }
+                reader.readAsDataURL(input.files[0])
+            }
+        }
+
+        //---------------------------------------------------------------------------------------
+        function obtenerId(option) {
+            console.log(option.value)
+            let ddlMunicipio = $('#ddlMunicipio') //Pintar los modelos
+            let ddlColonia = $('#ddlColonia') //Pintar los modelos
+            ddlMunicipio.removeAttr('disabled');
+
+            if (option.value == "") {
+                let ddlMunicipio = $('#ddlMunicipio') //Pintar los modelos
+                let ddlColonia = $('#ddlColonia') //Pintar los modelos
+
+
+                ddlColonia.empty()
+                ddlColonia.append('<option value="">Selecciona un Colonia </option>')
+                ddlMunicipio.empty()
+                ddlMunicipio.append('<option value="">Selecciona un Municipio </option>')
+
+                ddlMunicipio.attr('disabled', true);
+                ddlColonia.attr('disabled', true);
+
+            } else {
+
+                /* let ddlModelo = $('#ddlModelo') //Pintar los modelos*/
+                let ddlColonia = $('#ddlColonia') //Pintar los modelos
+
+
+                ddlColonia.empty()
+                ddlColonia.append('<option value="">Selecciona un Colonia </option>')
+                ddlColonia.attr('disabled', true);
+
+
+
+                ddlMunicipio.attr('disabled', false);
+
+                $.ajax({
+                    type: 'GET',
+                    url: 'http://localhost:56751/Usuario/MunicipioGetByIdEstado?IdEstado=' + option.value,
+                    /*data: '{IdMarca :1},*/
+                    dataType: 'json',
+                    success: function (result) {
+                        if (result.Correct) {
+
+                            let ddlMunicipio = $('#ddlMunicipio') //Pintar los modelos
+
+
+                            ddlMunicipio.empty();
+
+
+                            ddlMunicipio.append('<option value="">Selecciona un Municipio </option>');
+
+
+
+
+                            result.Objects.forEach(function (municipio, index) {
+                                let option = '<option value ="' + municipio.IdMunicipio + '">' + municipio.Nombre + '</option>'
+
+                                ddlMunicipio.append(option)
+                            })
+                        } else {
+                            console.log("error " + result.ErrorMessage)
+                        }
+                    },
+                    error: function () {
+
+                    },
+                })
+
+            }
+        }
+
+        function obtenerIdMunicipio(option) {
+            console.log(option.value)
+
+            if (option.value == "") {
+                let ddlColonia = $('#ddlColonia') //Pintar los modelos
+
+                ddlColonia.empty();
+                ddlColonia.append('<option value="">Selecciona un Colonia </option>')
+                ddlColonia.attr('disabled', true);
+            } else {
+                let ddlColonia = $('#ddlColonia')//Pintar los modelos
+
+
+
+                ddlColonia.attr('disabled', false);
+                $.ajax({
+                    type: 'GET',
+                    url: 'http://localhost:56751/Usuario/ColoniaGetByIdMunicipio?IdMunicipio=' + option.value,
+                    /*data: '{IdMarca :1},*/
+                    dataType: 'json',
+                    success: function (result) {
+                        if (result.Correct) {
+
+                            let ddlColonia = $('#ddlColonia') //Pintar los modelos
+
+
+
+                            ddlColonia.empty();
+
+
+                            ddlColonia.append('<option value="">Selecciona un Colonia </option>');
+
+
+                            result.Objects.forEach(function (colonia, index) {
+                                let option = '<option value ="' + colonia.IdColonia + '">' + colonia.Nombre + '</option>'
+
+                                ddlColonia.append(option)
+                            })
+                        } else {
+                            console.log("error " + result.ErrorMessage)
+                        }
+                    },
+                    error: function () {
+
+                    },
+                })
+
+            }
+        }
+
+        function SoloLetras(input) {
+            var str = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+            var regex = new RegExp(/[A-zÁ-ú\s]+$/);
+
+            if (regex.test(str)) {
+
+                $(input).removeClass("is-invalid")
+                $(input).addClass("is-valid")
+
+                let padre = $(input).closest('div');
+                let span = $(padre).find('span')
+
+                let mensaje = $(padre).find('div')
+
+                if (mensaje.length == 0) {
+                    let mensajeBien = "<div class='valid-feedback'>Looks good!</div>"
+                    padre.append(mensajeBien)
+
+                } else {
+
+                    // ← AGREGADO: elimina mensajes previos
+                    padre.find('.invalid-feedback').remove();
+
+
+                }
+
+                return true;
+            }
+            else {
+
+                $(input).removeClass("is-valid")
+                $(input).addClass("is-invalid")
+
+                let padre = $(input).closest('div');
+                let span = $(padre).find('span')
+
+                let mensaje = $(padre).find('div')
+
+                if (mensaje.length == 0) {
+
+                    let mensajeMal = "<div class='invalid-feedback'>No valido. </div> "
+                    padre.append(mensajeMal)
+                } else {
+                    padre.find('.valid-feedback').remove();
+                }
+
+                event.preventDefault();
+                return false;
+            }
+
+        }
+
+        function ValidarPegado(input) {
+            var textoPegado = (event.clipboardData || window.clipboardData).getData('text');
+            var regex = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]*$/;
+
+            if (!regex.test(textoPegado)) {
+                event.preventDefault(); // bloquea el pegado
+            }
+        }
+
+        function validarEmail(input) {
+
+            let campo = input;
+            let padre = $(input).closest('div');
+
+
+            let emailRegex = /^[a-zA-Z0-9._%+-]+@@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+            // Limpieza de mensajes previos
+            padre.find(".valid-feedback, .invalid-feedback").remove();
+
+            if (emailRegex.test(campo.value)) {
+
+                $(input).removeClass("is-invalid");
+                $(input).addClass("is-valid");
+                let EmailBueno = "<div class='valid-feedback'>Looks good!</div>";
+                padre.append(EmailBueno);
+
+                return true;
+
+            } else {
+
+                $(input).removeClass("is-valid");
+                $(input).addClass("is-invalid");
+
+                let EmailMal = "<div class='invalid-feedback'>El email no es válido.</div>";
+                padre.append(EmailMal);
+
+                return false;
+            }
+
+
+        }
+
+        // Mostrar campo confirmar contraseña
+        function mostrarConfirmPassword(input) {
+            const password = input.value;
+            if (password.length > 0) {
+                $('#confirm-container').slideDown();
+            } else {
+                $('#confirm-container').slideUp();
+                $('#confirm-password').val('');
+                $('#confirm-password').removeClass('is-valid is-invalid');
+                $('#confirm-container .invalid-feedback').hide();
+            }
+        }
+
+        // Validación de contraseña (igual que antes)
+        function validarPassword(input) {
+            const password = input.value;
+            const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@@!%*?&])[A-Za-z\d$@@!%*?&]{8,15}$/;
+
+            let padre = $(input).closest('div');
+            padre.find(".valid-feedback, .invalid-feedback").remove();
+
+            if (regex.test(password)) {
+                $(input).removeClass("is-invalid").addClass("is-valid");
+                padre.append("<div class='valid-feedback'>Contraseña válida.</div>");
+                return true;
+            } else {
+                $(input).removeClass("is-valid").addClass("is-invalid");
+                padre.append("<div class='invalid-feedback'>La contraseña debe tener 8-15 caracteres, al menos una mayúscula, una minúscula, un número y un carácter especial ($@@!%*?&).</div>");
+                return false;
+            }
+        }
+
+        // Validación confirm password en tiempo real
+        $('#confirm-password').on('input', function () {
+            const confirmPassword = $(this).val();
+            const password = $('#Password').val(); // nombre generado por HtmlHelper
+
+            if (confirmPassword !== password) {
+                $(this).addClass('is-invalid').removeClass('is-valid');
+                $(this).siblings('.invalid-feedback').show();
+            } else {
+                $(this).removeClass('is-invalid').addClass('is-valid');
+                $(this).siblings('.invalid-feedback').hide();
+            }
+        });
+
+        // Validación final al enviar
+        $('#submit').on('click', function () {
+            const passwordValida = validarPassword($('#Password')[0]);
+            const confirmCoincide = $('#confirm-password').val() === $('#Password').val();
+
+            if (passwordValida && confirmCoincide) {
+                alert('Formulario enviado correctamente!');
+            } else {
+                alert('Revisa los campos de contraseña.');
+            }
+        });
+
+
+
+        function validarFecha(input) {
+
+            const valor = input.value;
+
+            // Tu expresión regular
+            const regex = /^(\d{4})-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/;
+
+            // Remover mensajes previos
+            let padre = $(input).closest("div");
+            padre.find(".valid-feedback, .invalid-feedback").remove();
+
+            if (regex.test(valor)) {
+
+                $(input).removeClass("is-invalid").addClass("is-valid");
+                padre.append("<div class='valid-feedback'>Fecha válida.</div>");
+                return true;
+
+            } else {
+
+                $(input).removeClass("is-valid").addClass("is-invalid");
+                padre.append("<div class='invalid-feedback'>Fecha invalida.</div>");
+                return false;
+            }
+        }
+
+        function phonenumber(input) {
+
+
+            const phoneno = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+
+            let padre = $(input).closest("div");
+            padre.find(".valid-feedback, .invalid-feedback").remove();
+
+            if (phoneno.test(input.value)) {
+
+                $(input).removeClass("is-invalid").addClass("is-valid");
+                padre.append("<div class='valid-feedback'>Número válido.</div>");
+                return true;
+
+            } else {
+
+                $(input).removeClass("is-valid").addClass("is-invalid");
+                padre.append("<div class='invalid-feedback'>Número inválido.</div>");
+                return false;
+            }
+        }
+
+        function validarCURP(input) {
+
+
+            input.value = input.value.toUpperCase();
+
+
+
+            const regex = /^([A-Z][AEIOUX][A-Z]{2}\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])[HM](?:AS|B[CS]|C[CLMSH]|D[FG]|G[TR]|HG|JC|M[CNS]|N[ETL]|OC|PL|Q[TR]|S[PLR]|T[CSL]|VZ|YN|ZS)[B-DF-HJ-NP-TV-Z]{3}[A-Z\d])(\d)$/;
+
+            let padre = $(input).closest("div");
+            padre.find(".valid-feedback, .invalid-feedback").remove();
+
+            if (regex.test(input.value)) {
+                $(input).removeClass("is-invalid").addClass("is-valid");
+                padre.append("<div class='valid-feedback'>CURP válida.</div>");
+                return true;
+            } else {
+                $(input).removeClass("is-valid").addClass("is-invalid");
+                padre.append("<div class='invalid-feedback'>CURP inválida.</div>");
+                return false;
+            }
+        }
+
+        function validarAlfanumerico(input) {
+
+
+
+
+            const regex = /^[A-Za-z0-9\s]+$/;
+
+
+            let padre = $(input).closest('div');
+            padre.find('.invalid-feedback, .valid-feedback').remove();
+
+
+            if (regex.test(input.value) || input.value === "") { // Permitimos campo vacío
+                $(input).removeClass("is-invalid").addClass("is-valid");
+
+
+                padre.append("<div class='valid-feedback'>Looks good!</div>");
+                return true;
+            } else {
+                $(input).removeClass("is-valid").addClass("is-invalid");
+
+
+                padre.append("<div class='invalid-feedback'>No válido. Solo letras, números y espacios.</div>");
+
+
+                event.preventDefault();
+                return false;
+            }
+        }
+
+
+
+
+        function validaFormulario() {
+            let inputs = $('input');
+
+            $.each(inputs, function (index, value) {
+
+
+                if ($(value).hasClass('is-invalid') || $(value).val() == '') {
+                    if ($("#ApellidoMaterno") || $("#Celular") || $("#CURP") || $("#imagenAuto")) {
+                        return true;
+                    } else {
+                        event.preventDefault();
+                        alert("Aun tienes errores")
+                        return false;
+                    }
+
+
+                }
+            })
+
+        }
+
+        function soloNumeros(input) {
+            const regex = /^[0-9]+$/;
+            let padre = $(input).closest('div');
+
+            // Borrar mensajes previos (importante)
+            padre.find('.invalid-feedback, .valid-feedback').remove();
+
+            // Validar tecla presionada
+            if (!/^[0-9]$/.test(event.key)) {
+                event.preventDefault();
+
+                $(input).removeClass("is-valid").addClass("is-invalid");
+
+                padre.append("<div class='invalid-feedback'>no valido</div>");
+                return false;
+            }
+
+            // Si es válido
+            $(input).removeClass("is-invalid").addClass("is-valid");
+
+            padre.append("<div class='valid-feedback'>Valido!</div>");
+            return true;
+        }
+
+        function validarSexo() {
+            const opciones = $(".sexoOption");
+            const padre = $("#sexoGroup");
+
+            padre.find(".valid-feedback, .invalid-feedback").remove();
+            opciones.removeClass("is-valid is-invalid");
+
+            if (!opciones.is(":checked")) {
+                opciones.addClass("is-invalid");
+                padre.append("<div class='invalid-feedback d-block'>Debe seleccionar una opción.</div>");
+                return false;
+            }
+
+            opciones.addClass("is-valid");
+            padre.append("<div class='valid-feedback d-block'>¡Correcto!</div>");
+            return true;
+        }
+
+
+
+
+        function validarDropdown(input) {
+            const padre = $(input).parent();
+            const valor = $(input).val();
+
+            // Limpiar mensajes anteriores
+            padre.find(".invalid-feedback, .valid-feedback").remove();
+
+            // Si el valor es vacío o el placeholder
+            if (valor === "" || valor === "Selecciona El Rol") {
+                $(input).removeClass("is-valid").addClass("is-invalid");
+                padre.append("<div class='invalid-feedback'>Debe seleccionar un rol</div>");
+                return false;
+            }
+
+            // Si es válido
+            $(input).removeClass("is-invalid").addClass("is-valid");
+            padre.append("<div class='valid-feedback'>Correcto</div>");
+            return true;
+        }
+
+        function validarDropdownDireccion(input) {
+            const padre = $(input).parent();
+            const valor = $(input).val();
+
+            // Eliminar mensajes previos para evitar duplicados
+            padre.find(".invalid-feedback, .valid-feedback").remove();
+
+            // Si no seleccionó nada o seleccionó el placeholder
+            if (!valor || valor === "" || valor === "Selecciona la Estado" || valor === "Seleciona el Municipio" || valor === "Seleciona la Colonia") {
+                $(input).removeClass("is-valid").addClass("is-invalid");
+                padre.append("<div class='invalid-feedback'>Debe seleccionar una opción</div>");
+                return false;
+            }
+
+            // Si es válido
+            $(input).removeClass("is-invalid").addClass("is-valid");
+            padre.append("<div class='valid-feedback'>Correcto</div>");
+            return true;
+        }
+
+
+
+    </script>

@@ -1,0 +1,11 @@
+UserName|Nombre|ApellidoPaterno|ApellidoMaterno|Email|Password|FechaNacimeinto|SEXO|Telefono|Celular|Estatus|CURP|Imagen|IdRol|Calle|NumeroInterior|NumeroExterior|IdColonia
+@Luc1aH|Lu66cia|Hernandez|Garcia|H.Lucia@gmail.com|Luci@123|1996-06-10|M|7721231231|7667212312|TRUE|HEGL960110MDFRRC05|NULL|NULL|20 de enero|25|2|1256
+Hug0M|Hugo|Marti67nez|Lo66pez|M.Hugo@gmail.com|M@rtinez12|1997-02-25|H|7721202826|5547586915|TRUE|MALH970225HDFRPG00|NULL|2|18 de febrero|21|5|255
+M4rt1n|Martin|Rodriguez|Perez|R.Martin@@gmail.com|marci@h123|1995-03-25|H|7721569231|7521931212|TRUE|ROPM950325HDFDRR08|NULL|3|20 de enero|25|2|563
+S0F14|Sofia|Flores|Cruz|F.Sofia@gmail.com|Sofi@F123|1998-04-06|L|772556969231|7524831212|TRUE|FOCS980406MDFLRF01|NULL|1|25 de abril|14|2|1000
+M4t30|Mateo|Gomez|Guzman|G.Meteo@gmail.com|Mateo@G123|1999-05-07|H|7152569231|756656931212|TRUE|GO55GM990507HDFMZT09|NULL|2|20 de mayo|26|5|254
+P4ul4|Paula|Sanchez|Torres|S.Paula@gmail.com|P4ula@H123|2000-06-05|H|4421569231|5521931212|TRUE|SATP000605MDFNRLA0|NULL|4|20" de junio|95|6|536
+P4BL0|Pablo|Ruiz|Mendoza|R.Pablo@gmail.com|P4bl0@H123|2001-07-23|H|2221569231|3321931212|TRUE|SATP000605MDFNRLA0|NULL|1|20 de julio|2t6|6d6|796
+L30|Leo|Diaz|Vazquez|D.Leo@gmail.com|LeoDiaz@H123|2002-08-16|H|3321569231|7711931212|TRUE|DIVL020816HDFZZXA2|NULL|2|20 de agosto|25|2|4000
+D@4n13l4|Daniela|Reyes|Ruiz|D.reyes@gmail.com|D@niela1231|2003-09-27|M|5695485659|5649856523|TRUE|RERD030927MDFYZNA9|NULL|3|16 de septiembre|26|3|6554
+4lv4r0|Alvaro|Jimfenez|Cruz|A.jimenez@gmail.com|@lvareS123|2004-10-25|H|5626256465|5566332f255|TRUE|JICA041025HfDFMRLA9|NULL|1|9 de octubre|58|5|365

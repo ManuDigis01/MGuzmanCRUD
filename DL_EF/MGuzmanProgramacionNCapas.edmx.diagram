@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="8901482fb7674e43b7e7df81611b60b8" Name="Diagram1">
+        <EntityTypeShape EntityType="MGuzmanProgramacionNCapasModel.Rol" Width="1.5" PointX="0.75" PointY="2.25" />
+        <EntityTypeShape EntityType="MGuzmanProgramacionNCapasModel.Usuario" Width="1.5" PointX="3" PointY="1" />
+        <AssociationConnector Association="MGuzmanProgramacionNCapasModel.FK__Usuario__IdRol__403A8C7D" />
+        <EntityTypeShape EntityType="MGuzmanProgramacionNCapasModel.Colonia" Width="1.5" PointX="9.875" PointY="6.125" />
+        <EntityTypeShape EntityType="MGuzmanProgramacionNCapasModel.Direccion" Width="1.5" PointX="12.125" PointY="3.375" />
+        <EntityTypeShape EntityType="MGuzmanProgramacionNCapasModel.Estado" Width="1.5" PointX="5.375" PointY="6.375" />
+        <EntityTypeShape EntityType="MGuzmanProgramacionNCapasModel.Municipio" Width="1.5" PointX="7.625" PointY="6.25" />
+        <AssociationConnector Association="MGuzmanProgramacionNCapasModel.FK__Colonia__IdMunic__09A971A2" />
+        <AssociationConnector Association="MGuzmanProgramacionNCapasModel.FK__Direccion__IdCol__0C85DE4D" />
+        <AssociationConnector Association="MGuzmanProgramacionNCapasModel.FK__Direccion__IdUsu__0D7A0286" />
+        <AssociationConnector Association="MGuzmanProgramacionNCapasModel.FK__Municipio__IdEst__76969D2E" />
+        <EntityTypeShape EntityType="MGuzmanProgramacionNCapasModel.UsuarioGetAllView" Width="1.5" PointX="0.75" PointY="6.75" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

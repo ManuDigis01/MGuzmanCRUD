@@ -1,0 +1,482 @@
+﻿@model ML.Usuario
+@{
+    ViewBag.Title = "GetAll";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    ML.ResultTXT erroresEncontrados = (ML.ResultTXT)Session["ErroresTXT"];
+    string path = (string)Session["pathArchivo"];
+    Session["ErroresTXT"] = null;
+
+}
+
+<div style="display: flex; justify-content: center;">
+    <h1>Usuarios</h1>
+    </div>
+
+    <div class="d-grid g-2  d-md-flex justify-content-md-end">
+        <div><a href="@Url.Action("Form","Usuario")" class="btn btn-outline-success"><i class="bi bi-person-plus-fill"> Agregar Usuario </i></a></div>
+
+        <div class="d-grid g-2  d-md-flex justify-content-md-end">
+            <button id="btnBusqueda" type="button" class="btn btn-outline-primary mb-3">
+                <i class="bi bi-search"> Búsqueda </i>
+            </button>
+        </div>
+
+        <div class="d-grid g-2  d-md-flex justify-content-md-end">
+            <button id="btnCargaMasiva" type="button" class="btn btn-outline-danger mb-3">
+                <i class="bi bi-file-earmark-minus-fill"> Carga Masiva </i>
+            </button>
+
+        </div>
+
+    </div>
+
+    <div class="container">
+        <div class="row">
+
+
+            @using (Html.BeginForm("GetAll", "Usuario", FormMethod.Post))
+            {
+                <div id="formularioBusqueda" class="p-3 mb-2 text-black  border border-dark z-n1 position-absolute p-5 rounded-3" style="background-color:darkgray">
+
+                    <div class="row justify-content-center align-items-end border border-white g-3 flex-wrap text-center">
+                        <div class="col-3">
+                            @Html.LabelFor(model => model.Nombre, new { @class = "form-label " })
+                            @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control " })
+                            <p></p>
+                        </div>
+
+                        <div class="col-3">
+                            @Html.LabelFor(model => model.ApellidoPaterno, "Apellido Paterno", new { @class = "form-label" })
+                            @Html.TextBoxFor(model => model.ApellidoPaterno, new { @class = "form-control" })
+                            <p></p>
+                        </div>
+
+                        <div class="col-2">
+                            @Html.LabelFor(model => model.ApellidoMaterno, "Apellido Materno", new { @class = "form-label" })
+                            @Html.TextBoxFor(model => model.ApellidoMaterno, new { @class = "form-control  " })
+                            <p></p>
+                        </div>
+
+                        <div class="col-2">
+
+                            @Html.LabelFor(modelo => modelo.Rol.IdRol, "Rol", new { @class = "form-label" })
+
+                            @*@Html.DropDownListFor(modelo => modelo.Rol.IdRol, rol, "Select rol", new { @class = "form-control" })*@
+                            @if (Model.Rol.Roles != null)
+                            {
+                                @Html.DropDownListFor(model => model.Rol.IdRol, new SelectList(Model.Rol.Roles, "IdRol", "Nombre"), "Selecciona El Rol", new { @class = "form-select" })
+                                <p></p>
+                            }
+                            else
+                            {
+                                @Html.DropDownListFor(model => model.Rol.IdRol, new SelectList(string.Empty), "Selecciona un rol", new { @class = "form-select" })
+                                <p></p>
+
+                            }
+
+
+                        </div>
+
+                        <div class="col-2 container">
+                            <button id="BotonBuscar" type="submit" class="btn btn-warning ">
+                                <i class="bi bi-table "> Buscar </i>
+                            </button>
+                            <p></p>
+                        </div>
+
+
+                    </div>
+
+                </div>
+            }
+
+        </div>
+
+    </div>
+
+
+    <div class="container">
+        <div class="row">
+
+            @using (Html.BeginForm("CargaMasiva", "Usuario", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+            {
+                <div id="formularioCargaMasiva" class="col-7 mb-2 border border-dark text-black z-2 position-absolute p-2 rounded-2" style="background-color:white">
+
+                    <div class="row justify-content-center   align-items-end g-3 flex-wrap text-center">
+
+                        <div class="col-12 " style="margin: auto; width: 50%;  padding: 10px;">
+                            <div class=" border border-dark container">
+                                <div class="col-12 ">
+                                    <h4 class="bg-black" style="color:white">Carga Masiva</h4>
+                                </div>
+                                <div class="col-12  ">
+
+                                    <input class="btn btn-outline-secondary container" type="file" id="archivoValidad" name="archivo" onchange="validarArchivoYActualizarBoton()" />
+                                </div>
+                                <div class="col-1">
+                                    <div>
+                                        <label class="form-check-label"><i class="bi bi-filetype-txt" style="color: blue; font-size:25px"></i></label>
+                                        @Html.RadioButton("tipoArchivo", "TXT", new { @class = "form-check-input " })
+
+                                    </div>
+                                </div>
+                                <div class="col-1">
+                                    <div style="justify-content:center">
+                                        <label class="form-check-label"><i class="bi bi-file-earmark-spreadsheet" style="color: seagreen; font-size:25px"></i></label>
+                                        @Html.RadioButton("tipoArchivo", "XLS", new { @class = "form-check-input" })
+                                    </div>
+
+                                </div>
+                                <div class="col-12">
+                                    @if (path == null)
+                                    {
+
+
+                                        <button class="btn btn-outline-primary " id="actionButton">
+                                            <i class="bi bi-file-earmark-break-fill"> Validar</i>
+                                        </button>
+                                    }
+                                    else
+                                    {
+
+                                        <button class="btn btn-outline-success " id="btnValidar">
+                                            <i class="bi bi-save2"> Guardar</i>
+                                        </button>
+                                    }
+
+
+                                    <p></p>
+                                </div>
+                            </div>
+
+
+
+                            <div class="col-9">
+                                @if (erroresEncontrados != null)
+                                {
+
+
+                                    <div class=" mb-2">
+                                        <table class="table table-bordered border border-top table table-striped table-hover" align="left">
+
+                                            <thead>
+
+                                                <tr>
+                                                    <th class="table-danger ">Numero registro </th>
+                                                    <th class="table-danger ">Errores</th>
+
+                                                </tr>
+                                            </thead>
+
+                                            <tbody>
+                                                @if (erroresEncontrados.ErroresEncontrados.Count > 0)
+                                                {
+
+                                                    foreach (ML.ResultTXT error in erroresEncontrados.ErroresEncontrados)
+                                                    {
+
+                                                        <tr>
+                                                            <td class="table-danger">@error.NumeroRegistro</td>
+                                                            <td class="table-danger"><i class="bi bi-x-circle" style="color: red; font-size: 30px"><a style="color: black; font-size: 15px"> @error.Error</a></i></td>
+
+                                                        </tr>
+                                                    }
+                                                }
+                                                else
+                                                {
+
+
+                                                }
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                }
+
+                                @if (erroresEncontrados != null)
+                                {
+
+
+                                    <div class=" mb-2">
+                                        <table class="table table-bordered border border-top table table-striped table-hover" align="left">
+
+                                            <thead>
+
+                                                <tr>
+                                                    <th class="table-success ">Numero registro </th>
+                                                    <th class="table-success ">Correctos</th>
+
+                                                </tr>
+                                            </thead>
+
+                                            <tbody>
+                                                @if (erroresEncontrados.Correctos.Count > 0)
+                                                {
+                                                    foreach (ML.ResultTXT corretos in erroresEncontrados.Correctos)
+                                                    {
+
+                                                        <tr>
+                                                            <td class="table-success">@corretos.NumeroRegistro</td>
+
+                                                            <td class="table-success"><i class="bi bi-check-circle" style="color: green; font-size: 30px"><a style="color: black; font-size: 15px"> El Registro es Correcto :D</a></i></td>
+
+                                                        </tr>
+                                                    }
+                                                }
+                                                else
+                                                {
+
+
+                                                }
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                }
+
+
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                </div>
+
+            }
+
+
+        </div>
+
+    </div>
+
+    @*-------------------------------------------------------------------------------------------------------------------------------------------------------------*@
+    <div class="container">
+        <div class="row">
+            <div class="table-responsive col-12">
+                <table class="table table-bordered border border-white table table-striped "  align="left">
+                    <thead>
+                        <tr>
+                            <th class="cuadro" style="background-color: #07546E ">UserName</th>
+                            <th class="cuadro" style="background-color: #07546E ">Nombre</th>
+                            <th class="cuadro" style="background-color: #07546E ">Apellido Paterno  </th>
+                            <th class="cuadro" style="background-color: #07546E ">Apellido Materno  </th>
+                            <th class="cuadro" style="background-color: #07546E ">Email</th>
+                            <th class="cuadro" style="background-color: #07546E ">Password</th>
+                            <th class="cuadro" style="background-color: #07546E ">Fecha Nacimineto</th>
+                            <th class="cuadro" style="background-color: #07546E ">Sexo</th>
+                            <th class="cuadro" style="background-color: #07546E ">Telefono</th>
+                            <th class="cuadro" style="background-color: #07546E ">Celular</th>
+                            <th class="cuadro" style="background-color: #07546E ">Estatus</th>
+                            <th class="cuadro" style="background-color: #07546E ">Curp</th>
+                            <th class="cuadro" style="background-color: #07546E ">Imagen</th>
+                            <th class="cuadro" style="background-color: #07546E ">Nombre Rol</th>
+                            <th class="cuadro" style="background-color: #07546E ">Direccion</th>
+                            <th class="cuadro" style="background-color: #07546E ">Editar</th>
+                            <th class="cuadro" style="background-color: #07546E ">Eliminar</th>
+
+
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @if (Model.Usuarios != null && Model.Usuarios.Count > 0)
+
+                        {
+                            foreach (ML.Usuario usuario in Model.Usuarios)
+                            {
+                                <tr>
+                                    <td >@usuario.UserName</td>
+                                    <td >@usuario.Nombre</td>
+                                    <td >@usuario.ApellidoPaterno</td>
+                                    <td >@usuario.ApellidoMaterno</td>
+                                    <td >@usuario.Email</td>
+                                    <td >@usuario.Password</td>
+                                    <td >@usuario.FechaNacimiento</td>
+                                    <td >@usuario.SEXO</td>
+                                    <td >@usuario.Telefono</td>
+                                    <td >@usuario.Celular</td>
+                                    <td class="text-center ">
+                                        <div class="form-check form-switch">
+                                            <input type="checkbox" class="form-check-input" data-id="@usuario.IdUsuario" onchange="cambiarEstatus(this)" @(usuario.Estatus ? "checked" : "") />
+                                            <label for="estatus_@usuario.IdUsuario">
+                                                @(usuario.Estatus ? "Activo" : "Inactivo")
+                                            </label>
+                                        </div>
+                                    </td>
+                                    <td >@usuario.CURP</td>
+                                    @if (usuario.Imagen != null)
+                                    {
+                                        <td >
+                                            <img class="col-12" src="data:image/*;base64,@Convert.ToBase64String(usuario.Imagen)" />
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td >
+                                            <img class="col-12" src="https://e7.pngegg.com/pngimages/556/580/png-clipart-computer-icons-symbol-user-profile-logo-symbol-miscellaneous-white.png" />
+                                        </td>
+                                    }
+                                    <td >@usuario.Rol.Nombre</td>
+                                    <td  style="min-width: 300px; white-space: normal;"> @usuario.Direccion.Calle @usuario.Direccion.NumeroInterior ext.@usuario.Direccion.NumeroExterior, @usuario.Direccion.Colonia.Nombre , @usuario.Direccion.Colonia.CPostal @usuario.Direccion.Colonia.Municipio.Nombre , @usuario.Direccion.Colonia.Municipio.Estado.Nombre</td>
+
+
+
+                                    <td >
+                                        <a href="@Url.Action("Form","Usuario", new { IdUser = usuario.IdUsuario })" class="btn btn-outline-info">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </a>
+                                    </td>
+
+                                    <td>
+                                        <a href="@Url.Action("Delete","Usuario", new { Id = usuario.IdUsuario })" class="btn btn-outline-danger"
+                                           OnClick=" return confirm('¿Estás seguro de que deseas eliminar este usuario?')">
+                                            <i class="bi bi-trash-fill"></i>
+                                        </a>
+
+                                    </td>
+
+
+                                </tr>
+
+                            }
+
+                        }
+                        else
+                        {
+                            <p>No hay Registros</p>
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+    @Scripts.Render("~/bundles/jquery")
+
+
+    <script>
+function cambiarEstatus(elem) {
+    const idUsuario = $(elem).data("id");
+    const nuevoEstatus = elem.checked;
+    const label = $(elem).next("label");
+
+    $.ajax({
+        url: '@Url.Action("UpdateEstatus", "Usuario")',
+        type: 'POST',
+        contentType: "application/json",
+        data: JSON.stringify({ IdUsuario: idUsuario, Estatus: nuevoEstatus }),
+        dataType: "json",
+        success: function (result) {
+            if (result.Correct) {
+                label.text(nuevoEstatus ? "Activo" : "Inactivo");
+            } else {
+                console.log("error " + result.ErrorMessage);
+                elem.checked = !nuevoEstatus;
+            }
+        },
+        error: function () {
+
+            elem.checked = !nuevoEstatus;
+        }
+    });
+    }
+
+
+    $(document).ready(function () {
+        $("#formularioBusqueda").hide();
+
+        $("#btnBusqueda").click(function () {
+            $("#formularioBusqueda").slideToggle(400);
+        });
+    });
+
+    $(document).ready(function () {
+        $("#formularioCargaMasiva").hide();
+
+        $("#btnCargaMasiva").click(function () {
+            $("#formularioCargaMasiva").slideToggle(400);
+        });
+    });
+
+
+    // Cuando cambie la opción de tipo de archivo, borrar el archivo seleccionado
+    // --- Cuando cambie el tipo de archivo, resetear input file ---
+    document.querySelectorAll('input[name="tipoArchivo"]').forEach(opcion => {
+        opcion.addEventListener("change", () => {
+            document.getElementById("archivoValidad").value = "";
+        });
+    });
+
+
+    // --- Función de validación ---
+    function validarArchivoYActualizarBoton() {
+
+        const inputFile = document.getElementById("archivoValidad");
+        const archivo = inputFile.value;
+        const boton = document.getElementById("btnValidar");
+
+        // Validar opción seleccionada y cambiar texto del botón
+        const tipoSeleccionado = document.querySelector('input[name="tipoArchivo"]:checked');
+
+        if (!tipoSeleccionado) {
+            alert("Seleccione el tipo de archivo (TXT o XLS).");
+            inputFile.value = "";
+            Session["pathArchivo"] = null;
+            return false;
+        }
+
+        const tipo = tipoSeleccionado.value.trim().toUpperCase();
+
+        // Cambiar texto del botón
+        boton.innerHTML = '<i class="bi bi-file-earmark-break-fill"></i> Validar';
+        boton.classList.remove("btn-outline-success");
+        boton.classList.add("btn-outline-primary");
+
+
+
+
+        // Validar que exista archivo
+        if (!archivo) {
+            alert("Seleccione un archivo antes de validar.");
+            return false;
+        }
+
+        // Extensión del archivo
+        const extension = archivo.split('.').pop().toLowerCase();
+
+        // Extensiones válidas por tipo
+        const extensionesValidas = {
+            "TXT": ["txt"],
+            "XLS": ["xls", "xlsx"]
+        };
+
+        // Validar extensión
+        if (!extensionesValidas[tipo].includes(extension)) {
+            alert(
+                `Archivo inválido.\nTipo seleccionado: ${tipo}\nExtensiones permitidas: ${extensionesValidas[tipo].join(", ")}`
+            );
+            inputFile.value = "";
+            return false;
+        }
+
+        return true; // Todo OK
+    }
+
+     
+
+    </script>
+<style>
+    th {
+        
+        color: white;
+        
+    }
+</style>
+
+
+

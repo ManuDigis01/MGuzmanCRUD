@@ -1,0 +1,4 @@
+En el registro Numero 10 se encontraron estos errores: 
+En el Campo Password, debe tener 8-15 caracteres, al menos una mayúscula, una minúscula, un número y un carácter especial ($@@!%*?&) 
+
+-----------------------------------------------------------------
